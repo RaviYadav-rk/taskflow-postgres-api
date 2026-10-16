@@ -14,13 +14,21 @@ export interface TaskAttributes {
   updatedAt?: Date;
 }
 
-export interface TaskCreationAttributes
-  extends Optional<
-    TaskAttributes,
-    "id" | "description" | "status" | "priority" | "dueDate" | "createdAt" | "updatedAt"
-  > {}
+export interface TaskCreationAttributes extends Optional<
+  TaskAttributes,
+  | "id"
+  | "description"
+  | "status"
+  | "priority"
+  | "dueDate"
+  | "createdAt"
+  | "updatedAt"
+> {}
 
-export class Task extends Model<TaskAttributes, TaskCreationAttributes> implements TaskAttributes {
+export class Task
+  extends Model<TaskAttributes, TaskCreationAttributes>
+  implements TaskAttributes
+{
   public id!: number;
   public title!: string;
   public description!: string | null;
