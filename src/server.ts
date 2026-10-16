@@ -1,21 +1,21 @@
 import { app } from "./app.js";
-import { sequelize } from "./config/database.js";
-import { User } from "./models/user.model.js";
-
-const PORT = Number(process.env.PORT) || 5000;
+import { sequelize, User, Task } from "./models/index.js";
+import { config } from "./config/env.js";
 
 const startServer = async (): Promise<void> => {
   try {
     await sequelize.authenticate();
-
     console.log("PostgreSQL connected successfully");
 
-    await User.sync();
-
+    // Sync database tables with alter: true to safely adapt existing schemas
+    await User.sync({ alter: true });
     console.log("Users table synchronized successfully");
 
-    app.listen(PORT, () => {
-      console.log(`Server running on http://localhost:${PORT}`);
+    await Task.sync({ alter: true });
+    console.log("Tasks table synchronized successfully");
+
+    app.listen(config.port, () => {
+      console.log(`TaskFlow Server running on http://localhost:${config.port}`);
     });
   } catch (error) {
     console.error("Unable to start server:", error);
